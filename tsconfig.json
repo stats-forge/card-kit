@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": ["src", "tests", "*.config.ts"],
+  "compilerOptions": {
+    // the configs run on node, and the tests read node's types through vitest
+    "types": ["node"]
+  }
+}
