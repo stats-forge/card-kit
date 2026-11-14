@@ -7,7 +7,6 @@
     "outDir": "./build",
     "declaration": true,
     "declarationMap": true,
-    "customConditions": [],
 
     // Typecheck is performed in a separate task
     "noCheck": true
