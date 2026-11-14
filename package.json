@@ -1,6 +1,6 @@
 {
   "name": "@stats-forge/card-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The frame, themes, text and api boundary the stats-forge cards are drawn with",
   "keywords": [
     "card-generator",
