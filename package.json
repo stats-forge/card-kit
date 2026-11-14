@@ -24,7 +24,8 @@
   "files": [
     "build",
     "src",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "type": "module",
   "sideEffects": false,
