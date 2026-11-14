@@ -30,10 +30,7 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": {
-      "@stats/source": "./src/index.ts",
-      "default": "./build/index.js"
-    }
+    ".": "./build/index.js"
   },
   "publishConfig": {
     "access": "public"
