@@ -45,6 +45,7 @@
     "test:coverage": "vitest --run --coverage",
     "typecheck": "tsc -p tsconfig.json",
     "lint": "oxlint",
+    "lint:ci": "oxlint --format=github",
     "lint:fix": "oxlint --fix",
     "lint:knip": "knip",
     "lint:publish": "attw --pack . --profile node16 --ignore-rules cjs-resolves-to-esm && publint --strict",
