@@ -1,5 +1,15 @@
 # @stats-forge/card-kit
 
+## 0.1.2
+
+### Patch Changes
+
+- [#30](https://github.com/stats-forge/card-kit/pull/30) [`ec5d0fd`](https://github.com/stats-forge/card-kit/commit/ec5d0fdbcd2dc71169fadf129c41f9c42c6f41d1) - fix: refuse a number too long to be finite, which reached the card as infinity
+
+- [#30](https://github.com/stats-forge/card-kit/pull/30) [`ec5d0fd`](https://github.com/stats-forge/card-kit/commit/ec5d0fdbcd2dc71169fadf129c41f9c42c6f41d1) - fix: wrap a long word in time linear in its length
+
+- [#30](https://github.com/stats-forge/card-kit/pull/30) [`ec5d0fd`](https://github.com/stats-forge/card-kit/commit/ec5d0fdbcd2dc71169fadf129c41f9c42c6f41d1) - fix: drop the control characters XML cannot carry, which left a card that drew one malformed
+
 ## 0.1.1
 
 ### Patch Changes
