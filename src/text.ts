@@ -43,6 +43,14 @@ const AVERAGE_CHAR_WIDTH = 0.5131403493881227;
  */
 const FULL_WIDTH_PATTERN = /[\u3000-\u9FFF\uFF00-\uFFEF]/;
 
+/** @returns A character's advance, as a fraction of the font size. */
+const charWidth = (char: string): number => {
+  if (FULL_WIDTH_PATTERN.test(char)) {
+    return 1;
+  }
+  return CHAR_WIDTHS[char.codePointAt(0) ?? 0] ?? AVERAGE_CHAR_WIDTH;
+};
+
 /**
  * Retrieve text length based on Segoe UI font.
  *
@@ -51,14 +59,30 @@ const FULL_WIDTH_PATTERN = /[\u3000-\u9FFF\uFF00-\uFFEF]/;
  * @returns Text length.
  */
 const measureText = (str: string, fontSize = 10): number =>
-  [...str]
-    .map((char) => {
-      if (FULL_WIDTH_PATTERN.test(char)) {
-        return 1;
-      }
-      return CHAR_WIDTHS[char.codePointAt(0) ?? 0] ?? AVERAGE_CHAR_WIDTH;
-    })
-    .reduce((total, width) => total + width, 0) * fontSize;
+  [...str].map((char) => charWidth(char)).reduce((total, width) => total + width, 0) * fontSize;
+
+/**
+ * Whether `str` fits beside `used` within `room`, summed as {@link measureText} sums it so the
+ * answer is the same, but stopping at the first character past the room: a word many lines long
+ * would otherwise be measured whole once per line.
+ *
+ * @returns The width `str` takes, or `undefined` when it does not fit.
+ */
+const widthWithin = (
+  str: string,
+  fontSize: number,
+  used: number,
+  room: number,
+): number | undefined => {
+  let total = 0;
+  for (const char of str) {
+    total += charWidth(char);
+    if (used + total * fontSize > room) {
+      return undefined;
+    }
+  }
+  return total * fontSize;
+};
 
 /**
  * Split text into the lines it would wrap to when laid out greedily at the
@@ -94,11 +118,11 @@ const splitWrappedText = (text: string, fontSize: number, maxWidth: number): Arr
     token: string,
     availableWidth: number,
   ): { segment: string; width: number } => {
-    const characters = [...token];
     let segment = '';
     let width = 0;
 
-    for (const character of characters) {
+    // iterated rather than spread, so a long token costs only the characters taken
+    for (const character of token) {
       const characterWidth = measureText(character, fontSize);
       if (segment && width + characterWidth > availableWidth) {
         break;
@@ -130,8 +154,8 @@ const splitWrappedText = (text: string, fontSize: number, maxWidth: number): Arr
     let remaining = token;
 
     while (remaining) {
-      const w = measureText(remaining, fontSize);
-      if (currentWidth + w <= maxWidth) {
+      const w = widthWithin(remaining, fontSize, currentWidth, maxWidth);
+      if (w !== undefined) {
         lines[lines.length - 1] = (lines.at(-1) ?? '') + remaining;
         currentWidth += w;
         break;

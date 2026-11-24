@@ -49,6 +49,15 @@ describe(splitWrappedText, () => {
   it('trailing spaces should not cause line breaks', () => {
     expect(splitWrappedText('hi hi ', 10, 12)).toStrictEqual(['hi', 'hi']);
   });
+
+  it('should wrap a long unbroken word in time linear in its length', () => {
+    // quadratic, 128K characters took over ten seconds; a description is upstream's to make long
+    const started = performance.now();
+    const lines = splitWrappedText('a'.repeat(128 * 1024), 14, 300);
+
+    expect(lines.join('')).toHaveLength(128 * 1024);
+    expect(performance.now() - started).toBeLessThan(1000);
+  });
 });
 
 describe(wrapTextMultiline, () => {
