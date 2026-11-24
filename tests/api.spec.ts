@@ -127,6 +127,13 @@ describe(cardHandlerFor, () => {
     expect(retryable).toBe(false);
   });
 
+  it('refuses a number too long to be finite, rather than drawing it as infinity', async () => {
+    const { error, retryable } = await failureOf({ border_radius: '9'.repeat(400) });
+
+    expect(error).toMatchObject({ code: 'invalid_param', param: 'border_radius' });
+    expect(retryable).toBe(false);
+  });
+
   it('draws the error in the theme it was asked for, unless that was what failed', async () => {
     const themed = await failureOf({ theme: 'ember_dark', card_width: 'x' });
     const unthemed = await failureOf({ theme: 'nope' });

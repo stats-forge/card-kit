@@ -26,4 +26,8 @@ describe(encodeHTML, () => {
   it('should drop backspace', () => {
     expect(encodeHTML('a\u0008b')).toBe('ab');
   });
+
+  it('should drop every character XML cannot carry, keeping tab, newline and return', () => {
+    expect(encodeHTML('a\u0000\u0001\u000B\u000C\u001F\uFFFE\uFFFFb\t\n\r')).toBe('ab\t\n\r');
+  });
 });

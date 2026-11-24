@@ -157,7 +157,8 @@ const numberParam = ({ min = 0, max = Infinity, px = false }: NumericFormat = {}
       rawParam.check(
         rejects(REJECTION_MESSAGES.number, (value) => {
           const parsed = Number.parseFloat(value);
-          return pattern.test(value) && parsed >= min && parsed <= max;
+          // enough digits read as Infinity, which passes an unbounded `max`
+          return pattern.test(value) && Number.isFinite(parsed) && parsed >= min && parsed <= max;
         }),
       ),
       z.transform((value) => (value === undefined ? undefined : Number.parseFloat(value))),
