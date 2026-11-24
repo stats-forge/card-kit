@@ -76,6 +76,15 @@ describe(renderMarkup, () => {
     `);
   });
 
+  it('should stay well-formed XML whatever control character text or an attribute holds', () => {
+    const svg = renderMarkup(
+      el('svg', { xmlns: 'http://www.w3.org/2000/svg' }, el('text', { id: 'a\u0001' }, 'b\u0000c')),
+    );
+
+    const parsed = new DOMParser().parseFromString(svg, 'image/svg+xml');
+    expect(parsed.querySelectorAll('parsererror')).toHaveLength(0);
+  });
+
   it('should render a stylesheet inside the style element', () => {
     expect(
       renderMarkup(
